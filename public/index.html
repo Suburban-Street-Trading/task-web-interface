@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,26 +10,32 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
+
         h1 {
             text-align: center;
         }
+
         #taskList {
             list-style-type: none;
             padding: 0;
         }
+
         .taskItem {
             margin-bottom: 10px;
         }
+
         input[type="text"] {
             width: 70%;
             padding: 8px;
         }
+
         button {
             padding: 8px;
             margin-right: 5px;
         }
     </style>
 </head>
+
 <body>
     <h1>Task Scheduler Admin</h1>
     <ul id="taskList"></ul>
@@ -56,7 +63,7 @@
             tasks.forEach(task => {
                 const taskItem = document.createElement('li');
                 taskItem.className = 'taskItem';
-                taskItem.textContent = `Task ID: ${task.taskId}, Cron Expression: ${task.cronExpression}`;
+                taskItem.textContent = `Task ID: ${task.taskId}, Cron Expression: ${task.cronExpression}, Enabled?: ${task.enabled}`;
 
                 const cancelButton = createButton('Cancel', () => cancelTask(task.taskId));
                 const enableButton = createButton('Enable', () => enableTask(task.taskId));
@@ -105,8 +112,9 @@
 
         async function cancelTask(taskId) {
             try {
-                const response = await fetch(`/tasks/${taskId}/cancel`, { method: 'POST' });
+                const response = await fetch(`/tasks/${taskId}/cancel`, { method: 'PUT' });
                 if (response.ok) {
+                    alert("Task cancelled successfully")
                     getTasks();
                 } else {
                     throw new Error('Failed to cancel task');
@@ -119,8 +127,10 @@
 
         async function enableTask(taskId) {
             try {
-                const response = await fetch(`/tasks/${taskId}/enable`, { method: 'POST' });
+                const response = await fetch(`/tasks/${taskId}/enable`, { method: 'PUT' });
+
                 if (response.ok) {
+                    alert("Task enabled successfully")
                     getTasks();
                 } else {
                     throw new Error('Failed to enable task');
@@ -133,8 +143,9 @@
 
         async function disableTask(taskId) {
             try {
-                const response = await fetch(`/tasks/${taskId}/disable`, { method: 'POST' });
+                const response = await fetch(`/tasks/${taskId}/disable`, { method: 'PUT' });
                 if (response.ok) {
+                    alert("Task disabled successfully")
                     getTasks();
                 } else {
                     throw new Error('Failed to disable task');
@@ -152,10 +163,11 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ cronExpression : cronExpression }),
+                    body: JSON.stringify({ cronExpression: cronExpression }),
                 });
 
                 if (response.ok) {
+                    alert("Task rescheduled successfully")
                     getTasks();
                 } else {
                     throw new Error('Failed to reschedule task');
@@ -170,4 +182,5 @@
         getTasks();
     </script>
 </body>
+
 </html>

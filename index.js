@@ -1,14 +1,11 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const app = express();
 const port = 3006;
 
-let tasks = [
-    { taskId: 1, cronExpression: '*/2 * * * *', enabled: true },
-    { taskId: 2, cronExpression: '0 0 * * *', enabled: false },
-];
+const serverUrl = "http://167.172.1.153:3445"
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,8 +17,9 @@ app.use((req, res, next) => {
 });
 
 app.get('/tasks', async (req, res) => {
+
     try {
-        const response = await fetch('http://localhost:8083/tasks');
+        const response = await fetch(`${serverUrl}/tasks`);
         if (response.ok) {
             const tasks = await response.json();
             res.json(tasks);
@@ -35,10 +33,10 @@ app.get('/tasks', async (req, res) => {
     }
 });
 
-app.post('/tasks/:taskId/cancel', async (req, res) => {
-    const taskId = parseInt(req.params.taskId);
+app.put('/tasks/:taskId/cancel', async (req, res) => {
+    const taskId = req.params.taskId;
     try {
-        const response = await fetch(`http://localhost:8083/tasks/${taskId}/cancel`, { method: 'POST' });
+        const response = await fetch(`${serverUrl}/tasks/${taskId}/cancel`, { method: 'PUT' });
         if (response.ok) {
             res.sendStatus(200);
         } else if (response.status === 404) {
@@ -52,12 +50,13 @@ app.post('/tasks/:taskId/cancel', async (req, res) => {
     }
 });
 
-app.post('/tasks/:taskId/enable', async (req, res) => {
-    const taskId = parseInt(req.params.taskId);
+app.put('/tasks/:taskId/enable', async (req, res) => {
+    const taskId = req.params.taskId;
     try {
-        const response = await fetch(`http://localhost:8083/tasks/${taskId}/enable`, { method: 'POST' });
+        const response = await fetch(`${serverUrl}/tasks/${taskId}/enable`, { method: 'PUT' });
         if (response.ok) {
             res.sendStatus(200);
+            console.log("Task is enabled");
         } else if (response.status === 404) {
             res.sendStatus(404);
         } else {
@@ -69,10 +68,10 @@ app.post('/tasks/:taskId/enable', async (req, res) => {
     }
 });
 
-app.post('/tasks/:taskId/disable', async (req, res) => {
-    const taskId = parseInt(req.params.taskId);
+app.put('/tasks/:taskId/disable', async (req, res) => {
+    const taskId = req.params.taskId;
     try {
-        const response = await fetch(`http://localhost:8083/tasks/${taskId}/disable`, { method: 'POST' });
+        const response = await fetch(`${serverUrl}/tasks/${taskId}/disable`, { method: 'PUT' });
         if (response.ok) {
             res.sendStatus(200);
         } else if (response.status === 404) {
@@ -87,17 +86,17 @@ app.post('/tasks/:taskId/disable', async (req, res) => {
 });
 
 app.put('/tasks/:taskId/reschedule', async (req, res) => {
-    const taskId = parseInt(req.params.taskId);
+    const taskId = req.params.taskId;
     const { cronExpression } = req.body;
 
     try {
         console.log(cronExpression);
-        const response = await fetch(`http://localhost:8083/tasks/${taskId}/reschedule`, {
+        const response = await fetch(`${serverUrl}/tasks/${taskId}/reschedule`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ cronExpression : cronExpression }),
+            body: JSON.stringify({ cronExpression: cronExpression }),
         });
 
         console.log(response.status);
