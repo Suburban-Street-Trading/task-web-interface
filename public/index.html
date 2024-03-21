@@ -105,7 +105,7 @@
 
         async function cancelTask(taskId) {
             try {
-                const response = await fetch(`/tasks/${taskId}/cancel`, { method: 'POST' });
+                const response = await fetch(`/tasks/${taskId}/cancel`, { method: 'PUT' });
                 if (response.ok) {
                     getTasks();
                 } else {
@@ -119,7 +119,7 @@
 
         async function enableTask(taskId) {
             try {
-                const response = await fetch(`/tasks/${taskId}/enable`, { method: 'POST' });
+                const response = await fetch(`/tasks/${taskId}/enable`, { method: 'PUT' });
                 if (response.ok) {
                     getTasks();
                 } else {
@@ -133,7 +133,7 @@
 
         async function disableTask(taskId) {
             try {
-                const response = await fetch(`/tasks/${taskId}/disable`, { method: 'POST' });
+                const response = await fetch(`/tasks/${taskId}/disable`, { method: 'PUT' });
                 if (response.ok) {
                     getTasks();
                 } else {
@@ -154,7 +154,6 @@
                     },
                     body: JSON.stringify({ cronExpression : cronExpression }),
                 });
-
                 if (response.ok) {
                     getTasks();
                 } else {
