@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 
 app.get('/tasks', async (req, res) => {
     try {
-        const response = await fetch('http://127.0.0.1:8083/tasks');
+        const response = await fetch('http://192.168.1.5:8083/tasks');
         if (response.ok) {
             const tasks = await response.json();
             res.json(tasks);
@@ -104,8 +104,9 @@ app.put('/tasks/:taskId/reschedule', async (req, res) => {
 
         console.log(response.status);
         if (response.ok) {
-            console.log('Reschedule operation was successful');
             res.sendStatus(200);
+            console.log('Reschedule operation was successful');
+
         } else if (response.status === 400) {
             console.error('Invalid cron expression provided');
             res.sendStatus(400);

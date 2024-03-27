@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.taskList {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.taskItem {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+.taskDetails {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.taskActions {
+    display: flex;
+    align-items: center; 
+}
+
+.taskActions button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.taskActions button:hover {
+    background-color: #ddd;
+}
+
+.taskActions input[type="text"] {
+    width: 50%;
+    padding: 8px;
+}
+
+.taskActions input[type="submit"] {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.taskActions input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.taskReschedule {
+    margin-left: auto; 
+    display: flex; 
+    align-items: center; 
+}
+
+.taskReschedule input[type="text"] {
+    margin-right: 10px; 
+}
+
+.taskReschedule input[type="submit"] {
+    margin-left: 40px; 
+}
+
